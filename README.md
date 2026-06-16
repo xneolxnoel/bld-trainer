@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BLD Trainer
 
-## Getting Started
+Interactive trainer for learning to solve a 3x3 Rubik's cube blindfolded using the Old Pochmann method.
 
-First, run the development server:
+## Tech Stack
+
+- Next.js 16 + TypeScript + Tailwind CSS
+- `cubing` library for 3D cube visualization
+- Zustand + localStorage for progress
+- Framer Motion for animations
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build Static Site
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+Output is in `./dist`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy to GitHub Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A GitHub Actions workflow is included in `.github/workflows/deploy.yml`. It builds and deploys the site on every push to `main`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Setup
 
-## Deploy on Vercel
+1. Create a public GitHub repo.
+2. Push this code to the `main` branch.
+3. Go to repo **Settings** → **Pages**.
+4. Under **Source**, select **GitHub Actions**.
+5. (Optional) Add a custom domain and check **Enforce HTTPS**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Custom Domain with GitHub Pages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. In **Settings** → **Pages** → **Custom domain**, enter `bldtrainer.com`.
+2. At your domain registrar, add GitHub's A records:
+   ```
+   185.199.108.153
+   185.199.109.153
+   185.199.110.153
+   185.199.111.153
+   ```
+3. Check **Enforce HTTPS** in GitHub Pages settings.
+4. Wait a few minutes for the SSL certificate to be issued.
+
+## Deploy to Tencent Cloud COS
+
+1. Build: `npm run build`
+2. Upload the contents of `./dist` to a COS bucket.
+3. Enable static website hosting with index document `index.html`.
+4. (Optional) Bind a custom domain via Tencent Cloud CDN and enable HTTPS.
