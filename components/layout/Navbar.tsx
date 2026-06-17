@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Box, BookOpen, Dices, Library, Route, Dumbbell, Timer, Menu, X } from "lucide-react";
+import { Box, BookOpen, Dices, Library, Route, Dumbbell, Timer, BookMarked, Menu, X } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Roadmap", icon: Box },
@@ -17,6 +17,7 @@ const navItems = [
   { href: "/trainer", label: "Trainer", icon: Dumbbell },
   { href: "/solve", label: "Solve", icon: Timer },
   { href: "/algs", label: "Algs", icon: Library },
+  { href: "/glossary", label: "Glossary", icon: BookMarked },
 ];
 
 export default function Navbar() {

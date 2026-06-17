@@ -17,6 +17,7 @@ import Card from "@/components/ui/Card";
 import Badge, { type BadgeColor } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { isValidAlg } from "@/lib/cube-utils";
+import PageTitle from "@/components/layout/PageTitle";
 
 const CubePlayer = dynamic(() => import("@/components/cube/CubePlayer"), { ssr: false });
 
@@ -113,10 +114,13 @@ export default function TrainerPage() {
     const trimmed = draftSetup.trim();
     if (!trimmed) {
       clearSetupOverride(type, selected.letter);
+      setPlayKey((k) => k + 1);
     } else if (isValidAlg(trimmed)) {
       setSetupOverride(type, selected.letter, trimmed);
+      setPlayKey((k) => k + 1);
+    } else {
+      setDraftSetup(selected.setup);
     }
-    setPlayKey((k) => k + 1);
   };
 
   const handleClear = () => {
@@ -127,6 +131,7 @@ export default function TrainerPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Setup Move Trainer" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-6">
           <Badge color="primary" className="mb-4">

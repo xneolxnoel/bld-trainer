@@ -10,8 +10,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build` — Static export to `./dist` (Next is configured with `output: "export"` and `distDir: "dist"`).
 - `npm run lint` — ESLint via flat config (`eslint.config.mjs`).
 - `npx tsc --noEmit` — Type-check only (no separate script).
+- `npm test` — `node --test` over `test/*.test.ts`. Runs the `.ts` sources directly via Node's type stripping; `test/ts-loader.mjs` is a resolve hook that appends `.ts` to the codebase's extensionless relative imports. Covers the pure cube logic in `lib/cube-state.ts` (`applyScramble` / `trace`).
 
-No test suite exists. There is no `start` workflow worth running; `npm run start` exists but the app is a fully static export.
+The test runner is intentionally tiny (no Jest/Vitest, no transform step). There is no `start` workflow worth running; `npm run start` exists but the app is a fully static export.
 
 ## Deployment quirk
 

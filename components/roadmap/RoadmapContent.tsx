@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { EyeOff, ArrowRight, Sparkles } from "lucide-react";
+import { EyeOff, ArrowRight, Sparkles, RotateCcw, Dumbbell, Timer, Library } from "lucide-react";
 import { useProgressStore } from "@/stores/progressStore";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -61,6 +61,7 @@ const roadmapSteps = [
 
 export default function RoadmapContent() {
   const lessons = useProgressStore((s) => s.lessons);
+  const resetProgress = useProgressStore((s) => s.resetProgress);
   const completedCount = Object.values(lessons).filter((l) => l.completed).length;
 
   return (
@@ -132,6 +133,20 @@ export default function RoadmapContent() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               />
             </div>
+            <div className="mt-4 flex justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  if (confirm("Reset all progress? This cannot be undone.")) {
+                    resetProgress();
+                  }
+                }}
+              >
+                <RotateCcw className="w-4 h-4" />
+                Reset Progress
+              </Button>
+            </div>
           </Card>
         </motion.div>
 
@@ -172,6 +187,45 @@ export default function RoadmapContent() {
             );
           })}
         </div>
+
+        {/* Practice tools */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl font-black text-center mb-6">Practice Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Link href="/trainer">
+              <Card hover className="h-full group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mb-4">
+                  <Dumbbell className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Setup Trainer</h3>
+                <p className="text-sm text-muted-foreground">Drill every edge and corner setup move.</p>
+              </Card>
+            </Link>
+            <Link href="/solve">
+              <Card hover className="h-full group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center text-white mb-4">
+                  <Timer className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Full-Solve Sim</h3>
+                <p className="text-sm text-muted-foreground">Time yourself on random scrambles.</p>
+              </Card>
+            </Link>
+            <Link href="/algs">
+              <Card hover className="h-full group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-yellow-500 flex items-center justify-center text-white mb-4">
+                  <Library className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Algorithm Library</h3>
+                <p className="text-sm text-muted-foreground">Review every swap and parity algorithm.</p>
+              </Card>
+            </Link>
+          </div>
+        </motion.div>
 
         {/* Method note */}
         <motion.div

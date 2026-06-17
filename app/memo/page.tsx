@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Dices, Brain, ArrowRight } from "lucide-react";
 import { generateLetterPairs } from "@/lib/cube-utils";
@@ -9,9 +9,17 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import PageTitle from "@/components/layout/PageTitle";
 
 export default function MemoPage() {
   const [count, setCount] = useState(8);
+  const visitLesson = useProgressStore((s) => s.visitLesson);
+
+  useEffect(() => {
+    visitLesson("memo");
+  }, [visitLesson]);
+
+
   const [type, setType] = useState<"edge" | "corner">("edge");
   const [pairs, setPairs] = useState<string[]>([]);
   const [phase, setPhase] = useState<"setup" | "memorize" | "recall" | "result">("setup");
@@ -47,6 +55,7 @@ export default function MemoPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Memory Gym" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8 text-center">
           <Badge color="accent" className="mb-4"><Brain className="w-3 h-3 mr-1" /> Memory Gym</Badge>

@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Route, Play, RotateCcw, Check } from "lucide-react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import { useProgressStore } from "@/stores/progressStore";
+import PageTitle from "@/components/layout/PageTitle";
 
 // A pre-traced example so the lesson can walk a learner through a real chain
 // without requiring them to first follow the procedure cold.
 const EDGE_EXAMPLE = {
-  scramble: "(short demo scramble)",
+  scramble: "Example trace",
   chain: [
     { letter: "B", explain: "Read the sticker at the buffer (UF). Suppose it shows the letter B — that's your first target. Say B." },
     { letter: "M", explain: "Jump to position B (UR). Read the sticker there. Say its letter — M in this example." },
@@ -34,6 +36,11 @@ const QUIZ = {
 export default function TracingPage() {
   const [step, setStep] = useState(0);
   const [quizPick, setQuizPick] = useState<string | null>(null);
+  const visitLesson = useProgressStore((s) => s.visitLesson);
+
+  useEffect(() => {
+    visitLesson("tracing");
+  }, [visitLesson]);
 
   const reset = () => setStep(0);
   const next = () => setStep((s) => Math.min(s + 1, EDGE_EXAMPLE.chain.length));
@@ -44,6 +51,7 @@ export default function TracingPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Tracing" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8">
           <Badge color="secondary" className="mb-4">

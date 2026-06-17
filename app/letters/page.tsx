@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, ArrowRight } from "lucide-react";
 import LetterSchemeQuiz from "@/components/quiz/LetterSchemeQuiz";
@@ -8,12 +8,20 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { useProgressStore } from "@/stores/progressStore";
+import PageTitle from "@/components/layout/PageTitle";
 
 export default function LettersPage() {
   const [quizType, setQuizType] = useState<"edge" | "corner">("edge");
+  const visitLesson = useProgressStore((s) => s.visitLesson);
+
+  useEffect(() => {
+    visitLesson("letters");
+  }, [visitLesson]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Letter Scheme" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -35,7 +43,7 @@ export default function LettersPage() {
             <ul className="space-y-3 text-muted-foreground">
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                <span>Each of the 6 faces is assigned letters A-H in clockwise order.</span>
+                <span>The cube uses 24 letters, A-X. Each face gets a block of letters in clockwise order (U: A-H, R: I-P, F: Q-X, etc.).</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>

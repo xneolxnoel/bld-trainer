@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, RotateCcw, Trophy, Eye, EyeOff } from "lucide-react";
 import { getEdgeLetters, getCornerLetters, FACE_COLORS, FACE_NAMES, type StickerLetter } from "@/lib/speffz";
@@ -30,10 +30,23 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const markLessonComplete = useProgressStore((s) => s.markLessonComplete);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const allStickers = type === "edge" ? getEdgeLetters() : getCornerLetters();
 
   const startQuiz = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     const shuffled = [...allStickers].sort(() => Math.random() - 0.5);
     setQuizQueue(shuffled.slice(0, 12));
     setCurrentIndex(0);
@@ -47,6 +60,10 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
   }, [allStickers]);
 
   const backToLearn = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     setMode("learn");
     setShowLetters(true);
     setActiveSticker(null);
@@ -56,14 +73,15 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
 
   const checkAnswer = (value: string) => {
     const target = quizQueue[currentIndex];
-    if (!target) return;
+    if (!target || feedback !== null) return;
 
     const isCorrect = value.toUpperCase() === target.letter;
     setFeedback(isCorrect ? "correct" : "wrong");
 
     if (isCorrect) setScore((s) => s + 1);
 
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
       if (currentIndex + 1 >= quizQueue.length) {
         setQuizFinished(true);
         const finalScore = isCorrect ? score + 1 : score;
@@ -263,10 +281,12 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
                     onChange={handleInputChange}
                     maxLength={1}
                     autoFocus
+                    disabled={feedback !== null}
                     className={`
                       w-24 h-24 text-center text-5xl font-black rounded-2xl border-4
                       focus:outline-none focus:ring-4 focus:ring-primary/30 uppercase
                       transition-colors
+                      disabled:opacity-70 disabled:cursor-not-allowed
                       ${feedback === "correct" ? "border-success bg-green-50 text-success" : ""}
                       ${feedback === "wrong" ? "border-error bg-red-50 text-error" : ""}
                       ${!feedback ? "border-border bg-card text-foreground" : ""}

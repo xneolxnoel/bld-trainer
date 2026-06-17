@@ -8,6 +8,11 @@
 // This is enough to compute a Speffz trace from a scramble for the Old
 // Pochmann method (UF buffer / UBL buffer).
 
+import {
+  EDGE_BUFFER_LETTERS,
+  CORNER_BUFFER_LETTERS,
+} from "./setups";
+
 export type Side = "edge" | "corner";
 export type StickerState = Record<string, string>;
 
@@ -159,8 +164,6 @@ export const CORNER_PIECES: Record<string, string[]> = {
 
 export const EDGE_BUFFER_PIECE = "UF";
 export const CORNER_BUFFER_PIECE = "UBL";
-export const EDGE_BUFFER_LETTERS = ["C", "I"];
-export const CORNER_BUFFER_LETTERS = ["A", "R", "U"];
 
 function findPieceByLetter(letter: string, side: Side): string | null {
   const pieces = side === "edge" ? EDGE_PIECES : CORNER_PIECES;

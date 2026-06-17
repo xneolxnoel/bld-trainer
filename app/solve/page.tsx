@@ -9,6 +9,8 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { generateScramble, formatTime } from "@/lib/cube-utils";
 import { applyScramble, trace } from "@/lib/cube-state";
+import { useProgressStore } from "@/stores/progressStore";
+import PageTitle from "@/components/layout/PageTitle";
 
 const CubePlayer = dynamic(() => import("@/components/cube/CubePlayer"), { ssr: false });
 
@@ -35,6 +37,10 @@ export default function SolvePage() {
   const [cornerMemo, setCornerMemo] = useState<string>("");
   const [memoElapsed, setMemoElapsed] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [scrambleError, setScrambleError] = useState<string | null>(null);
+
+  const recordPracticeAttempt = useProgressStore((s) => s.recordPracticeAttempt);
+  const practiceStats = useProgressStore((s) => s.practiceStats);
 
   const cubeState = useMemo(() => (scramble ? applyScramble(scramble) : null), [scramble]);
   const edgeTrace = useMemo(
@@ -56,14 +62,19 @@ export default function SolvePage() {
     return () => clearInterval(id);
   }, [phase]);
 
-  const handleNewScramble = async () => {
-    const next = await generateScramble();
-    setScramble(next);
-    setEdgeMemo("");
-    setCornerMemo("");
-    setShowAnswer(false);
-    setMemoElapsed(0);
-    setPhase("setup");
+  const handleNewScramble = () => {
+    setScrambleError(null);
+    try {
+      const next = generateScramble();
+      setScramble(next);
+      setEdgeMemo("");
+      setCornerMemo("");
+      setShowAnswer(false);
+      setMemoElapsed(0);
+      setPhase("setup");
+    } catch {
+      setScrambleError("Could not generate a scramble. Please try again.");
+    }
   };
 
   const handleStartMemo = () => {
@@ -76,6 +87,12 @@ export default function SolvePage() {
   };
 
   const handleSubmit = () => {
+    const correct =
+      !!edgeScore &&
+      !!cornerScore &&
+      edgeScore.matched === edgeScore.total &&
+      cornerScore.matched === cornerScore.total;
+    recordPracticeAttempt(correct, memoElapsed);
     setPhase("result");
   };
 
@@ -86,6 +103,7 @@ export default function SolvePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Full-Solve Simulator" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8">
           <Badge color="primary" className="mb-4">
@@ -96,6 +114,23 @@ export default function SolvePage() {
             Generate a scramble, memorize the edge and corner letter sequences, then check your work
             against the computed trace.
           </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card>
+            <div className="text-sm text-muted-foreground">Attempts</div>
+            <div className="text-3xl font-black text-primary">{practiceStats.totalAttempts}</div>
+          </Card>
+          <Card>
+            <div className="text-sm text-muted-foreground">Correct Memos</div>
+            <div className="text-3xl font-black text-success">{practiceStats.correctMemos}</div>
+          </Card>
+          <Card>
+            <div className="text-sm text-muted-foreground">Best Memo Time</div>
+            <div className="text-3xl font-black text-secondary">
+              {practiceStats.bestTimeMs !== null ? formatTime(practiceStats.bestTimeMs) : "--:--"}
+            </div>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -109,6 +144,11 @@ export default function SolvePage() {
               </Button>
             </div>
 
+            {scrambleError && (
+              <div className="mb-4 p-3 rounded-xl bg-error/10 border-2 border-error/30 text-error text-sm">
+                {scrambleError}
+              </div>
+            )}
             {scramble ? (
               <>
                 <div className="p-3 mb-4 rounded-xl bg-card border-2 border-border font-mono text-sm break-words">

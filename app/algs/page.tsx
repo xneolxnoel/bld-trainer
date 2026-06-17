@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { ALL_ALGS, type AlgEntry } from "@/lib/algs";
 import Card from "@/components/ui/Card";
 import Badge, { type BadgeColor } from "@/components/ui/Badge";
+import PageTitle from "@/components/layout/PageTitle";
 
 const CubePlayer = dynamic(() => import("@/components/cube/CubePlayer"), { ssr: false });
 
@@ -34,6 +35,7 @@ export default function AlgsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageTitle title="Algorithm Library" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8">
           <Badge color="muted" className="mb-4"><Library className="w-3 h-3 mr-1" /> Reference</Badge>

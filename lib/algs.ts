@@ -1,7 +1,7 @@
 export interface AlgEntry {
   id: string;
   name: string;
-  type: 'edge' | 'corner' | 'parity' | 'setup';
+  type: 'edge' | 'corner' | 'parity';
   alg: string;
   description?: string;
   targets?: string[];
@@ -15,9 +15,18 @@ export const EDGE_SWAP_ALG = "R U R' U' R' F R2 U' R' U' R U R' F'";
 // Y-perm swaps UBL corner with UFR corner and UF/UR edges
 export const CORNER_SWAP_ALG = "F R U' R' U' R U R' F' R U R' U' R' F R F'";
 
-// Parity algorithm: when edges have odd number of targets
-// Do a modified edge swap that also fixes corners, then continue corners normally
-export const PARITY_ALG = "D' L2 D M2 D' L2 D";
+// Parity algorithm: used when edges have an odd number of targets.
+//
+// OP parity leaves the corner permutation odd — a single 2-corner swap that
+// 3-cycles (Y-perms) can never resolve on their own. The fix is one more T-perm:
+// it swaps two edges (finishing the leftover edge swap) AND two corners
+// (resolving the parity), and disturbs no centers. You then swap two of your
+// corner targets to account for the corners the alg moved.
+//
+// NOTE: the previous value `D' L2 D M2 D' L2 D` was an M-slice *edge* alg — it
+// moved zero corners and shifted the centers, so it could not fix OP parity
+// (and was an inert no-op in this repo's outer-face-only simulator).
+export const PARITY_ALG = EDGE_SWAP_ALG;
 
 export const EDGE_ALGS: AlgEntry[] = [
   {
@@ -45,7 +54,7 @@ export const PARITY_ALGS: AlgEntry[] = [
     name: 'Parity Fix',
     type: 'parity',
     alg: PARITY_ALG,
-    description: 'Used when you have an odd number of edge targets. Perform this right before starting corners, then continue with normal corner cycles.',
+    description: 'Used when you have an odd number of edge targets. It is the same T-perm you use for edges: applied once between edges and corners, it swaps the leftover two edges and two corners (no centers move). Swap two of your corner targets to compensate.',
   },
 ];
 
