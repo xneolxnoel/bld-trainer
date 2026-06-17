@@ -13,7 +13,7 @@ const navItems = [
   { href: "/edges", label: "Edges", icon: Box },
   { href: "/corners", label: "Corners", icon: Box },
   { href: "/parity", label: "Parity", icon: Box },
-  { href: "/memo", label: "Memo Gym", icon: Dices },
+  { href: "/memo", label: "Memo", icon: Dices },
   { href: "/trainer", label: "Trainer", icon: Dumbbell },
   { href: "/solve", label: "Solve", icon: Timer },
   { href: "/algs", label: "Algs", icon: Library },

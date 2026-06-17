@@ -51,7 +51,7 @@ const roadmapSteps = [
   },
   {
     slug: "memo",
-    title: "Memo",
+    title: "Memo Gym",
     description: "Train your brain to remember long letter chains.",
     icon: "M",
     color: "from-yellow-400 to-yellow-600",
