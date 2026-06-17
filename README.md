@@ -18,6 +18,15 @@ npm run dev
 
 Open http://localhost:3000.
 
+## Quality Checks
+
+```bash
+npm run lint        # ESLint (flat config)
+npx tsc --noEmit    # TypeScript type-check
+```
+
+There is no test suite.
+
 ## Build Static Site
 
 ```bash

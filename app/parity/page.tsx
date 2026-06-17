@@ -16,7 +16,7 @@ export default function ParityPage() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8">
-          <Badge color="secondary" className="mb-4"><AlertTriangle className="w-3 h-3 mr-1" /> Lesson 4</Badge>
+          <Badge color="secondary" className="mb-4"><AlertTriangle className="w-3 h-3 mr-1" /> Lesson 5</Badge>
           <h1 className="text-4xl font-black mb-4">Parity</h1>
           <p className="text-lg text-muted-foreground max-w-3xl">
             Sometimes edges have an odd number of targets. This means a single edge-swap

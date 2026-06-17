@@ -16,7 +16,7 @@ export default function CornersPage() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-8">
-          <Badge color="warning" className="mb-4"><Box className="w-3 h-3 mr-1" /> Lesson 3</Badge>
+          <Badge color="warning" className="mb-4"><Box className="w-3 h-3 mr-1" /> Lesson 4</Badge>
           <h1 className="text-4xl font-black mb-4">Corner Solving</h1>
           <p className="text-lg text-muted-foreground max-w-3xl">
             Corners work just like edges, but the buffer is{" "}

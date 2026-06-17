@@ -48,7 +48,18 @@ The simulator picks the alphabetically-first sticker at cycle breaks — a valid
 
 ### State persistence (`stores/progressStore.ts`)
 
-Single Zustand store with `persist` middleware (`localStorage` key `cube-bld-progress`, currently `version: 1`). Holds lesson progress, memo/practice stats, setup overrides, and known-state toggles. No migration function — bumping `version` silently drops user data.
+Single Zustand store with `persist` middleware (`localStorage` key `cube-bld-progress`, currently `version: 1`). Holds lesson progress, memo/practice stats, setup overrides, and known-state toggles. The `migrate` function merges any persisted state onto `initialState` so future `version` bumps fill missing fields with defaults instead of dropping them.
+
+**Always read with per-slice selectors**, not destructuring:
+
+```ts
+// Yes — narrow re-render scope.
+const setupOverrides = useProgressStore((s) => s.setupOverrides);
+const toggleKnown = useProgressStore((s) => s.toggleSetupKnown);
+
+// No — re-renders on every store change, anywhere.
+const { setupOverrides, toggleSetupKnown } = useProgressStore();
+```
 
 ### Cube visualization (`components/cube/CubePlayer.tsx`)
 
