@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 
+export type BadgeColor = "primary" | "secondary" | "accent" | "success" | "warning" | "error" | "muted";
+
 interface BadgeProps {
   children: ReactNode;
-  color?: "primary" | "secondary" | "accent" | "success" | "warning" | "error" | "muted";
+  color?: BadgeColor;
   className?: string;
 }
 
-const colors = {
+const colors: Record<BadgeColor, string> = {
   primary: "bg-blue-100 text-blue-700 border-blue-200",
   secondary: "bg-purple-100 text-purple-700 border-purple-200",
   accent: "bg-yellow-100 text-yellow-800 border-yellow-200",

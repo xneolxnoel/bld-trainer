@@ -28,12 +28,19 @@ interface ProgressState {
   // User settings
   letterScheme: 'speffz';
   notation: 'sign';
-  
+  // User-customized setup moves, keyed by `${type}-${letter}` (e.g. "edge-A").
+  setupOverrides: Record<string, string>;
+  // Letters the user has marked as drilled, keyed by `${type}-${letter}`.
+  knownSetups: Record<string, boolean>;
+
   // Actions
   markLessonComplete: (slug: string, quizScore?: number) => void;
   visitLesson: (slug: string) => void;
   recordMemoSession: (pairs: number, correct: number) => void;
   recordPracticeAttempt: (correct: boolean, timeMs: number) => void;
+  setSetupOverride: (type: 'edge' | 'corner', letter: string, setup: string) => void;
+  clearSetupOverride: (type: 'edge' | 'corner', letter: string) => void;
+  toggleSetupKnown: (type: 'edge' | 'corner', letter: string) => void;
   resetProgress: () => void;
 }
 
@@ -52,11 +59,13 @@ const initialState = {
   },
   letterScheme: 'speffz' as const,
   notation: 'sign' as const,
+  setupOverrides: {} as Record<string, string>,
+  knownSetups: {} as Record<string, boolean>,
 };
 
 export const useProgressStore = create<ProgressState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
       markLessonComplete: (slug, quizScore) => {
         set((state) => ({
@@ -105,12 +114,33 @@ export const useProgressStore = create<ProgressState>()(
           },
         }));
       },
+      setSetupOverride: (type, letter, setup) => {
+        const key = `${type}-${letter.toUpperCase()}`;
+        set((state) => ({
+          setupOverrides: { ...state.setupOverrides, [key]: setup },
+        }));
+      },
+      clearSetupOverride: (type, letter) => {
+        const key = `${type}-${letter.toUpperCase()}`;
+        set((state) => {
+          const next = { ...state.setupOverrides };
+          delete next[key];
+          return { setupOverrides: next };
+        });
+      },
+      toggleSetupKnown: (type, letter) => {
+        const key = `${type}-${letter.toUpperCase()}`;
+        set((state) => ({
+          knownSetups: { ...state.knownSetups, [key]: !state.knownSetups[key] },
+        }));
+      },
       resetProgress: () => {
         set(initialState);
       },
     }),
     {
       name: 'cube-bld-progress',
+      version: 1,
     }
   )
 );

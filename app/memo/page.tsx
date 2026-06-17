@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Dices, Brain, ArrowRight } from "lucide-react";
 import { generateLetterPairs } from "@/lib/cube-utils";
 import { useProgressStore } from "@/stores/progressStore";

@@ -49,27 +49,5 @@ export const PARITY_ALGS: AlgEntry[] = [
   },
 ];
 
-// Common setup moves for edges (target -> UR position)
-export const EDGE_SETUPS: Record<string, string> = {
-  A: "L2 D' L2",      // UB -> UR
-  B: "",              // UR (already target)
-  C: "F2",            // UF -> UR (but UF is buffer, never a target)
-  D: "L2 D L2",       // UL -> UR
-  E: "D' L2",         // BR -> UR
-  F: "D2 L2",         // DR -> UR
-  G: "D L2",          // FR -> UR
-  H: "L2",            // UR? actually DR... wait
-  // These setup moves are simplified examples; a real trainer would need a complete table
-};
-
-// Common setup moves for corners (target -> UFR position)
-export const CORNER_SETUPS: Record<string, string> = {
-  B: "R2",            // UBR -> UFR
-  C: "",              // UFR (target)
-  D: "F2",            // UFL -> UFR
-  E: "R'",            // UBR setup variant
-  F: "R",             // UFR
-  // Simplified examples
-};
-
 export const ALL_ALGS: AlgEntry[] = [...EDGE_ALGS, ...CORNER_ALGS, ...PARITY_ALGS];
+

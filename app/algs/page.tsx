@@ -6,12 +6,11 @@ import { Library, Search, Play } from "lucide-react";
 import dynamic from "next/dynamic";
 import { ALL_ALGS, type AlgEntry } from "@/lib/algs";
 import Card from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
+import Badge, { type BadgeColor } from "@/components/ui/Badge";
 
 const CubePlayer = dynamic(() => import("@/components/cube/CubePlayer"), { ssr: false });
 
-const typeColors: Record<string, string> = {
+const typeColors: Record<string, BadgeColor> = {
   edge: "success",
   corner: "warning",
   parity: "secondary",
@@ -68,7 +67,7 @@ export default function AlgsPage() {
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="text-lg font-bold">{alg.name}</h3>
-                      <Badge color={typeColors[alg.type] as any}>{typeLabels[alg.type]}</Badge>
+                      <Badge color={typeColors[alg.type]}>{typeLabels[alg.type]}</Badge>
                     </div>
                     <p className="font-mono text-primary font-bold">{alg.alg}</p>
                     {alg.description && (
@@ -92,7 +91,7 @@ export default function AlgsPage() {
                 <>
                   <div className="flex items-center gap-2 mb-4">
                     <h2 className="text-2xl font-black">{selectedAlg.name}</h2>
-                    <Badge color={typeColors[selectedAlg.type] as any}>{typeLabels[selectedAlg.type]}</Badge>
+                    <Badge color={typeColors[selectedAlg.type]}>{typeLabels[selectedAlg.type]}</Badge>
                   </div>
                   <div className="text-xl font-mono font-bold text-primary mb-4 p-4 bg-card rounded-xl border-2 border-border text-center">
                     {selectedAlg.alg}

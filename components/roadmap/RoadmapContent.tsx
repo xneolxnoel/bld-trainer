@@ -18,6 +18,14 @@ const roadmapSteps = [
     duration: "20 min",
   },
   {
+    slug: "tracing",
+    title: "Tracing",
+    description: "Turn a scrambled cube into a sequence of letters with the buffer-jump procedure.",
+    icon: "→",
+    color: "from-indigo-400 to-indigo-600",
+    duration: "25 min",
+  },
+  {
     slug: "edges",
     title: "Edge Solving",
     description: "Learn the UF buffer and how to shoot edges with setup moves.",

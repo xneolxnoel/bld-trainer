@@ -18,7 +18,6 @@ interface LetterSchemeQuizProps {
 // 3 4 5
 // 6 7 8
 const EDGE_POSITIONS = [1, 3, 5, 7];
-const CORNER_POSITIONS = [0, 2, 6, 8];
 
 export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
   const [mode, setMode] = useState<"learn" | "quiz">("learn");
@@ -93,9 +92,6 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
   };
 
   const isEdgePosition = (position: number) => EDGE_POSITIONS.includes(position);
-  const isCornerPosition = (position: number) => CORNER_POSITIONS.includes(position);
-
-  const faces: Array<keyof typeof FACE_NAMES> = ["U", "L", "F", "R", "B", "D"];
 
   const renderFace = (face: keyof typeof FACE_NAMES) => {
     return (

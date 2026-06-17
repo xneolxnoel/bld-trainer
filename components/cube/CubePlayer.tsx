@@ -41,7 +41,9 @@ export default function CubePlayer({
     };
   }, []);
 
-  // Create the player once, remove it on unmount.
+  // Create the player once, remove it on unmount. Initial prop values are
+  // intentionally captured only on first mount — later prop changes are
+  // mirrored via the sync effect below using TwistyPlayer's setters.
   useEffect(() => {
     if (!ready || !containerRef.current) return;
 
@@ -69,13 +71,18 @@ export default function CubePlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
-  // Update the algorithm when it changes.
+  // Mirror prop changes onto the live player. TwistyPlayer exposes each of
+  // these as a setter that triggers its own re-render.
   useEffect(() => {
     const player = playerRef.current;
-    if (player && currentAlg) {
-      player.alg = currentAlg;
-    }
-  }, [currentAlg]);
+    if (!player) return;
+    if (currentAlg) player.alg = currentAlg;
+    if (experimentalStickering) player.experimentalStickering = experimentalStickering;
+    if (hintFacelets) player.hintFacelets = hintFacelets;
+    if (controlPanel) player.controlPanel = controlPanel;
+    if (backView) player.backView = backView;
+    if (background) player.background = background;
+  }, [currentAlg, experimentalStickering, hintFacelets, controlPanel, backView, background]);
 
   return (
     <div

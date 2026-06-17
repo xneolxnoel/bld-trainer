@@ -7,7 +7,7 @@ import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { PARITY_ALG, EDGE_SWAP_ALG } from "@/lib/algs";
+import { PARITY_ALG } from "@/lib/algs";
 
 const CubePlayer = dynamic(() => import("@/components/cube/CubePlayer"), { ssr: false });
 
@@ -30,7 +30,7 @@ export default function ParityPage() {
             <h2 className="text-xl font-bold mb-4">When Does Parity Happen?</h2>
             <p className="text-muted-foreground mb-4">
               A 3x3 cube permutation must be even overall. If your edge cycle has an odd number of
-              targets, your corner cycle will be "off" by one swap. You detect this during memo:
+              targets, your corner cycle will be &ldquo;off&rdquo; by one swap. You detect this during memo:
               count your edge targets.
             </p>
             <div className="p-4 rounded-2xl bg-card border-2 border-border mb-4">

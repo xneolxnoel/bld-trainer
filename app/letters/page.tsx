@@ -51,7 +51,7 @@ export default function LettersPage() {
           <Card className="bg-gradient-to-br from-accent/20 to-yellow-50">
             <h2 className="text-xl font-bold mb-2">Pro Tip</h2>
             <p className="text-muted-foreground">
-              Turn letter pairs into words or images. "AB" could be "Ali Baba", "CK" could be "Cake".
+              Turn letter pairs into words or images. &ldquo;AB&rdquo; could be &ldquo;Ali Baba&rdquo;, &ldquo;CK&rdquo; could be &ldquo;Cake&rdquo;.
               The sillier the image, the easier it is to remember.
             </p>
           </Card>
@@ -81,9 +81,9 @@ export default function LettersPage() {
         </div>
 
         <div className="flex justify-end">
-          <Link href="/edges">
+          <Link href="/tracing">
             <Button size="lg">
-              Next: Edge Solving
+              Next: Tracing
               <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>

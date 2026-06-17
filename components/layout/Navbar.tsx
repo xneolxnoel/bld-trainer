@@ -1,22 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { Box, BookOpen, Dices, Library } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Box, BookOpen, Dices, Library, Route, Dumbbell, Timer, Menu, X } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Roadmap", icon: Box },
   { href: "/letters", label: "Letters", icon: BookOpen },
+  { href: "/tracing", label: "Tracing", icon: Route },
   { href: "/edges", label: "Edges", icon: Box },
   { href: "/corners", label: "Corners", icon: Box },
   { href: "/parity", label: "Parity", icon: Box },
   { href: "/memo", label: "Memo Gym", icon: Dices },
+  { href: "/trainer", label: "Trainer", icon: Dumbbell },
+  { href: "/solve", label: "Solve", icon: Timer },
   { href: "/algs", label: "Algs", icon: Library },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  // Close the mobile menu on navigation by detecting pathname changes during
+  // render — React 19 derived-state pattern, avoids the effect+setState dance.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    if (mobileOpen) setMobileOpen(false);
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b-2 border-border">
@@ -43,7 +55,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
+                  className={`relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors ${
                     isActive
                       ? "text-primary bg-primary/10"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -63,12 +75,51 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Mobile nav placeholder */}
-          <div className="md:hidden">
-            <span className="text-xs font-bold text-muted-foreground">Menu</span>
-          </div>
+          <button
+            type="button"
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            className="md:hidden p-2 rounded-xl text-foreground hover:bg-muted transition-colors"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.18 }}
+            className="md:hidden overflow-hidden border-t border-border bg-background/95"
+          >
+            <ul className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8 space-y-1">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold transition-colors ${
+                        isActive
+                          ? "text-primary bg-primary/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
