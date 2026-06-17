@@ -60,7 +60,7 @@ const roadmapSteps = [
 ];
 
 export default function RoadmapContent() {
-  const { lessons } = useProgressStore();
+  const lessons = useProgressStore((s) => s.lessons);
   const completedCount = Object.values(lessons).filter((l) => l.completed).length;
 
   return (

@@ -29,7 +29,7 @@ export default function LetterSchemeQuiz({ type }: LetterSchemeQuizProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
-  const { markLessonComplete } = useProgressStore();
+  const markLessonComplete = useProgressStore((s) => s.markLessonComplete);
 
   const allStickers = type === "edge" ? getEdgeLetters() : getCornerLetters();
 

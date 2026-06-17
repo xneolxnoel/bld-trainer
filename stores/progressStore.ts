@@ -141,6 +141,18 @@ export const useProgressStore = create<ProgressState>()(
     {
       name: 'cube-bld-progress',
       version: 1,
+      // Future-proof: any persisted state from an older schema is merged onto
+      // `initialState` so missing top-level slices and nested-stat fields
+      // (memoStats, practiceStats) get sensible defaults instead of `undefined`.
+      migrate: (persisted) => {
+        const p = (persisted ?? {}) as Partial<typeof initialState>;
+        return {
+          ...initialState,
+          ...p,
+          memoStats: { ...initialState.memoStats, ...(p.memoStats ?? {}) },
+          practiceStats: { ...initialState.practiceStats, ...(p.practiceStats ?? {}) },
+        };
+      },
     }
   )
 );

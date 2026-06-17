@@ -17,7 +17,8 @@ export default function MemoPage() {
   const [phase, setPhase] = useState<"setup" | "memorize" | "recall" | "result">("setup");
   const [recallInput, setRecallInput] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
-  const { recordMemoSession, memoStats } = useProgressStore();
+  const recordMemoSession = useProgressStore((s) => s.recordMemoSession);
+  const memoStats = useProgressStore((s) => s.memoStats);
 
   const startSession = () => {
     const newPairs = generateLetterPairs(count, type);

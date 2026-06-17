@@ -56,8 +56,11 @@ export default function TrainerPage() {
   });
   const [playKey, setPlayKey] = useState(0);
 
-  const { setupOverrides, knownSetups, setSetupOverride, clearSetupOverride, toggleSetupKnown } =
-    useProgressStore();
+  const setupOverrides = useProgressStore((s) => s.setupOverrides);
+  const knownSetups = useProgressStore((s) => s.knownSetups);
+  const setSetupOverride = useProgressStore((s) => s.setSetupOverride);
+  const clearSetupOverride = useProgressStore((s) => s.clearSetupOverride);
+  const toggleSetupKnown = useProgressStore((s) => s.toggleSetupKnown);
 
   const baseTable: SetupEntry[] = useMemo(
     () => (type === "edge" ? EDGE_SETUP_TABLE : CORNER_SETUP_TABLE),

@@ -1,4 +1,5 @@
 import { Alg } from "cubing/alg";
+import { randomScrambleForEvent } from "cubing/scramble";
 
 // Validate a SiGN algorithm string
 export function isValidAlg(algStr: string): boolean {
@@ -10,23 +11,12 @@ export function isValidAlg(algStr: string): boolean {
   }
 }
 
-// Generate a random scramble algorithm
-export function generateScramble(length: number = 25): string {
-  const moves = ["R", "R'", "R2", "L", "L'", "L2", "U", "U'", "U2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"];
-  const scramble: string[] = [];
-  let lastFace = "";
-
-  for (let i = 0; i < length; i++) {
-    // Re-roll while the picked move is on the same face as the previous one.
-    let move = moves[Math.floor(Math.random() * moves.length)];
-    while (move.charAt(0) === lastFace) {
-      move = moves[Math.floor(Math.random() * moves.length)];
-    }
-    scramble.push(move);
-    lastFace = move.charAt(0);
-  }
-
-  return scramble.join(" ");
+// Generate a proper WCA 3x3 scramble via cubing's solver-backed scrambler.
+// Naive face-deduped random walks can produce trivially-short solutions and
+// don't respect canonical-order rules — use the real thing.
+export async function generateScramble(): Promise<string> {
+  const alg = await randomScrambleForEvent("333");
+  return alg.toString();
 }
 
 const ALL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X'];

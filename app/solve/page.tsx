@@ -56,8 +56,9 @@ export default function SolvePage() {
     return () => clearInterval(id);
   }, [phase]);
 
-  const handleNewScramble = () => {
-    setScramble(generateScramble(20));
+  const handleNewScramble = async () => {
+    const next = await generateScramble();
+    setScramble(next);
     setEdgeMemo("");
     setCornerMemo("");
     setShowAnswer(false);
