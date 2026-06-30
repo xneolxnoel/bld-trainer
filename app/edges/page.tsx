@@ -32,7 +32,7 @@ export default function EdgesPage() {
           <p className="text-lg text-muted-foreground max-w-3xl">
             In Old Pochmann, we solve edges one piece at a time using the{" "}
             <strong>UF edge as a buffer</strong>. We read the sticker at UF, find where it belongs,
-            move that target piece to UR, perform a T-perm, and undo the setup.
+            move that target piece to UR, perform a J-perm, and undo the setup.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export default function EdgesPage() {
                 <strong className="text-foreground">Find that target piece</strong> and use setup moves to bring it to the UR position.
               </li>
               <li>
-                <strong className="text-foreground">Execute the T-perm</strong> to swap UF and UR.
+                <strong className="text-foreground">Execute the J-perm</strong> to swap UF and UR.
               </li>
               <li>
                 <strong className="text-foreground">Undo the setup</strong> to restore everything except the solved edge.
@@ -59,7 +59,7 @@ export default function EdgesPage() {
           </Card>
 
           <Card className="bg-gradient-to-br from-green-50 to-background">
-            <h2 className="text-xl font-bold mb-4">Edge Swap Algorithm (T-Perm)</h2>
+            <h2 className="text-xl font-bold mb-4">Edge Swap Algorithm (J-Perm)</h2>
             <div className="text-2xl font-mono font-bold text-primary mb-4 p-4 bg-card rounded-xl border-2 border-border text-center">
               {EDGE_SWAP_ALG}
             </div>
@@ -78,7 +78,7 @@ export default function EdgesPage() {
             <h2 className="text-xl font-bold mb-4">Setup Move Examples</h2>
             <p className="text-muted-foreground mb-4">
               A setup move brings the target edge to UR. The setup must not disturb the UF buffer.
-              After the T-perm, undo the setup.
+              After the J-perm, undo the setup.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[

@@ -80,7 +80,7 @@ const groups: { title: string; terms: Term[] }[] = [
     title: "Algorithms & special cases",
     terms: [
       {
-        term: "T-perm (edge swap)",
+        term: "J-perm (edge swap)",
         def: "The algorithm that swaps the edge buffer with the edge target (and two corners, harmless since corners come last). Also used once as the parity fix.",
         href: "/edges",
       },
@@ -91,7 +91,7 @@ const groups: { title: string; terms: Term[] }[] = [
       },
       {
         term: "Parity",
-        def: "An odd number of edge targets leaves corners in an odd permutation. You fix it with one extra T-perm between edges and corners, then swap your first two corner targets.",
+        def: "An odd number of edge targets leaves corners in an odd permutation. You fix it with one extra J-perm between edges and corners, then swap your first two corner targets.",
         href: "/parity",
       },
       {

@@ -32,7 +32,7 @@ export default function ParityPage() {
           <p className="text-lg text-muted-foreground max-w-3xl">
             Sometimes edges have an odd number of targets. That leaves your corners in an odd
             permutation — a single two-corner swap that 3-cycles can never fix on their own. You
-            resolve it with one extra T-perm between edges and corners, then adjust your corner memo.
+            resolve it with one extra J-perm between edges and corners, then adjust your corner memo.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function ParityPage() {
               {PARITY_ALG}
             </div>
             <p className="text-muted-foreground mb-4">
-              This is the <strong>same T-perm you use for edges</strong>. Run it once after your edge
+              This is the <strong>same J-perm you use for edges</strong>. Run it once after your edge
               targets and before corners: it swaps the leftover two edges and two corners, and{" "}
               <strong>leaves the centers untouched</strong>. Because it moves two corners, you adjust
               your corner memo to match (see below).
@@ -72,7 +72,7 @@ export default function ParityPage() {
         <Card className="mb-12 bg-gradient-to-br from-purple-50 to-background">
           <h2 className="text-xl font-bold mb-4">Compensating Your Corner Memo</h2>
           <p className="text-muted-foreground mb-4">
-            The parity T-perm swaps two corners as a side effect, so your traced corner sequence is
+            The parity J-perm swaps two corners as a side effect, so your traced corner sequence is
             now &ldquo;off&rdquo; by that swap. The standard fix is simple:
           </p>
           <div className="p-4 rounded-2xl bg-card border-2 border-border mb-4">
@@ -101,10 +101,10 @@ export default function ParityPage() {
               <strong className="text-foreground">If the edge count is odd</strong>, you have parity
               — swap your first two corner targets in memo before you start.
             </li>
-            <li>Solve all edge targets using T-perms.</li>
+            <li>Solve all edge targets using J-perms.</li>
             <li>
               <strong className="text-foreground">If you have parity:</strong> apply the parity
-              T-perm{" "}
+              J-perm{" "}
               <code className="bg-muted px-2 py-1 rounded font-mono text-primary">{PARITY_ALG}</code>{" "}
               once, now — between edges and corners.
             </li>
